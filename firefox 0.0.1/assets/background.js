@@ -3,7 +3,7 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.type === "FETCH_PLAYLIST_DURATION") {
     const playlistId = message.playlistId;
     
-    fetch(`https://www.ytpla.in/api/extention?id=${playlistId}`)
+    fetch(`https://www.ytpla.in/api/extension?id=${playlistId}`)
       .then(response => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

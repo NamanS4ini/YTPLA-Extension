@@ -22,7 +22,7 @@ Simply click the link above and add the extension to Firefox with one click!
 
 > **Note**: Due to the $5 Chrome Web Store developer fee, this extension is not available on the Chrome Web Store. Please install it manually using the steps below.
 
-1. **Download the extension**: [chrome.0.0.1.zip](https://github.com/NamanS4ini/YTPLA-Extention/releases/download/Chrome/chrome.0.0.1.zip)
+1. **Download the extension**: [chrome.0.0.1.zip](https://github.com/NamanS4ini/YTPLA-Extension/releases/download/Chrome/chrome.0.0.1.zip)
 2. Extract the downloaded ZIP file to a folder on your computer
 3. Open Chrome/Edge and navigate to `chrome://extensions/` (or `edge://extensions/`)
 4. Enable "Developer mode" using the toggle in the top-right corner
@@ -82,7 +82,7 @@ ytpla-extension/
 The content script (`content.js`) handles:
 
 - **Badge Creation**: Creates a styled badge element that matches YouTube's UI
-- **API Integration**: Fetches playlist data from `https://www.ytpla.in/api/extention?id={playlistId}`
+- **API Integration**: Fetches playlist data from `https://www.ytpla.in/api/extension?id={playlistId}`
 - **Dynamic Updates**: Uses MutationObserver to handle YouTube's SPA navigation
 - **Smart Placement**: Inserts the badge right after the playlist title element
 
@@ -97,7 +97,7 @@ The content script (`content.js`) handles:
 
 The extension uses the ytpla.in API:
 ```
-GET https://www.ytpla.in/api/extention?id={playlistId}
+GET https://www.ytpla.in/api/extension?id={playlistId}
 ```
 
 Expected response format:

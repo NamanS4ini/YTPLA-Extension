@@ -46,7 +46,7 @@ function makeBadge(text, playlistId) {
 
 async function fetchPlaylistDuration(playlistId) {
   try {
-    const response = await fetch(`https://www.ytpla.in/api/extention?id=${playlistId}`);
+    const response = await fetch(`https://www.ytpla.in/api/extension?id=${playlistId}`);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
