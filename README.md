@@ -22,7 +22,7 @@ Simply click the link above and add the extension to Firefox with one click!
 
 > **Note**: Due to the $5 Chrome Web Store developer fee, this extension is not available on the Chrome Web Store. Please install it manually using the steps below.
 
-1. **Download the extension**: [chrome.0.0.1.zip](https://github.com/NamanS4ini/YTPLA-Extension/releases/download/Chrome/chrome.0.0.1.zip)
+1. **Download the extension**: [chrome 1.0.0.zip](https://github.com/NamanS4ini/YTPLA-Extension/releases/download/1.0.0/chrome.zip)
 2. Extract the downloaded ZIP file to a folder on your computer
 3. Open Chrome/Edge and navigate to `chrome://extensions/` (or `edge://extensions/`)
 4. Enable "Developer mode" using the toggle in the top-right corner
