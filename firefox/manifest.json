@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "YouTube Playlist Analyzer",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "description": "Analyze and manage YouTube playlists with ease.",
 
   "background": {
