@@ -19,7 +19,7 @@
 
   "content_scripts": [
     {
-      "matches": ["*://*.youtube.com/*list=*"],
+      "matches": ["*://*.youtube.com/*"],
       "js": ["assets/content.js"]
     }
   ],

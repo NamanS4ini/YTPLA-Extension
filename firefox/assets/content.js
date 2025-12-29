@@ -139,11 +139,44 @@ function insertBadgeNearTitle(strText = "Total: —", forceUpdate = false) {
   return addedBadges;
 }
 
-// MutationObserver to handle SPA navigation / dynamic re-renders
+// Handle URL changes for YouTube SPA navigation
 let currentPlaylistId = null;
+let retryInterval = null;
+let lastUrl = location.href;
 
-const observer = new MutationObserver(() => {
-  // Check if playlist ID has changed
+function tryInsertBadge(maxRetries = 20, retryDelay = 250) {
+  let attempts = 0;
+  
+  // Clear any existing retry interval
+  if (retryInterval) {
+    clearInterval(retryInterval);
+    retryInterval = null;
+  }
+  
+  const attempt = () => {
+    attempts++;
+    const success = insertBadgeNearTitle("loading...");
+    
+    if (success || attempts >= maxRetries) {
+      if (retryInterval) {
+        clearInterval(retryInterval);
+        retryInterval = null;
+      }
+      if (!success && attempts >= maxRetries) {
+        console.log("YTPLA: Could not find title elements after max retries");
+      }
+    }
+  };
+  
+  // Try immediately first
+  const success = insertBadgeNearTitle("loading...");
+  if (!success) {
+    // Keep retrying until elements are found
+    retryInterval = setInterval(attempt, retryDelay);
+  }
+}
+
+function handleUrlChange() {
   const playlistId = new URL(location.href).searchParams.get("list");
   
   if (playlistId && playlistId !== currentPlaylistId) {
@@ -151,19 +184,56 @@ const observer = new MutationObserver(() => {
     currentPlaylistId = playlistId;
     const oldBadges = document.querySelectorAll(".ytpla-duration-badge");
     oldBadges.forEach(badge => badge.remove());
-    insertBadgeNearTitle("loading...");
+    
+    // Try to insert badge with retries
+    tryInsertBadge();
   } else if (playlistId) {
     // Same playlist, only add badges if they don't exist
     const badges = document.querySelectorAll(".ytpla-duration-badge");
     if (badges.length === 0) {
-      insertBadgeNearTitle("loading...");
+      tryInsertBadge();
     }
+  } else {
+    // No playlist ID, remove any badges and clear retry
+    currentPlaylistId = null;
+    if (retryInterval) {
+      clearInterval(retryInterval);
+      retryInterval = null;
+    }
+    const oldBadges = document.querySelectorAll(".ytpla-duration-badge");
+    oldBadges.forEach(badge => badge.remove());
   }
+}
+
+// Listen for URL changes via MutationObserver (catches YouTube SPA navigation)
+new MutationObserver(() => {
+  const currentUrl = location.href;
+  if (currentUrl !== lastUrl) {
+    lastUrl = currentUrl;
+    handleUrlChange();
+  }
+}).observe(document, { subtree: true, childList: true });
+
+// Also listen for popstate (back/forward navigation)
+window.addEventListener('popstate', () => {
+  lastUrl = location.href;
+  handleUrlChange();
 });
 
-// start observing once on document body
-observer.observe(document.body, { childList: true, subtree: true });
+// Listen for YouTube's custom navigation events
+document.addEventListener('yt-navigate-finish', () => {
+  lastUrl = location.href;
+  handleUrlChange();
+});
+
+// Also listen for yt-page-data-updated which fires when YouTube updates page content
+document.addEventListener('yt-page-data-updated', () => {
+  lastUrl = location.href;
+  handleUrlChange();
+});
 
 // Try immediate insertion (in case page already ready)
 currentPlaylistId = new URL(location.href).searchParams.get("list");
-insertBadgeNearTitle("loading...");
+if (currentPlaylistId) {
+  tryInsertBadge();
+}
